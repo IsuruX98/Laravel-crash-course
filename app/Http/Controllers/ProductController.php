@@ -29,12 +29,14 @@ class ProductController extends Controller
 
     public function index()
     {
+        // store the products data and send it to index page
         $products = $this->fetchdata();
         return view('products.index', ['products' => $products]);
     }
 
     public function create()
     {
+        // returning a page
         return view('products.create');
     }
 
@@ -59,7 +61,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
+        // this is how you check the request -> dd($request);
 
         $this->createProductApi($request);
 
