@@ -10,6 +10,13 @@
 <body>
     <h1>Product</h1>
     <div>
+        @if (session()->has('success'))
+            <div>
+                {{ session('success') }}
+            </div>
+        @endif
+    </div>
+    <div>
         <table border="1">
             <tr>
                 <th>ID</th>
@@ -18,6 +25,7 @@
                 <th>Price</th>
                 <th>Description</th>
                 <th>Edit</th>
+                <th>Delete</th>
             </tr>
 
             {{-- $products are coming from the contoller using the model --}}
@@ -33,6 +41,15 @@
                     <td>
                         {{-- passing the data to edit page --}}
                         <a href="{{ route('product.edit', ['product' => $product]) }}">Edit</a>
+                    </td>
+                    <td>
+                        {{-- passing the data to edit page --}}
+                        <form method="POST" action="{{ route('product.delete', ['product' => $product]) }}">
+                            @csrf
+                            {{-- simulate a PUT request. The actual HTTP method should be "post" in the form --}}
+                            @method('delete')
+                            <input type="submit" value="delete">
+                        </form>
                     </td>
                 </tr>
             @endforeach
