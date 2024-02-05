@@ -10,9 +10,21 @@ class ProductController extends Controller
 
     public function fetchdata()
     {
-        // passing the data from model to frontend
-        $products = Product::all();
-        return $products;
+        try {
+            // Fetching data from the model
+            $products = Product::all();
+
+            // Check if any products were found
+            if ($products->isEmpty()) {
+                return response()->json(['message' => 'No products found.'], 404);
+            }
+
+            // Return a JSON response with the products
+            return $products;
+        } catch (\Exception $e) {
+            // Handle any exceptions that may occur
+            return response()->json(['message' => 'Failed to fetch products', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function index()
@@ -29,19 +41,20 @@ class ProductController extends Controller
     public function createProductApi(Request $request)
     {
         //validating the data from the form
-        $data = $request->validate(
-            [
-                'name' => ['required'],
-                'qty' => ['required', 'numeric'],
-                'price' => ['required', 'decimal:0,2'],
-                'description' => ['required']
-            ]
-        );
+        $data = $request->validate([
+            'name' => ['required'],
+            'qty' => ['required', 'numeric'],
+            'price' => ['required', 'numeric', 'between:0,999999.99'],
+            'description' => ['required']
+        ]);
 
         //creating the new product
-        $newProduct = Product::create($data);
-
-        return $newProduct;
+        try {
+            $newProduct = Product::create($data);
+            return response()->json(['message' => 'Product created successfully', 'data' => $newProduct], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to create product', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request)
@@ -64,22 +77,23 @@ class ProductController extends Controller
     public function updateProductApi(Product $product, Request $request)
     {
         //validating the data from the form
-        $data = $request->validate(
-            [
-                'name' => ['required'],
-                'qty' => ['required', 'numeric'],
-                'price' => ['required', 'decimal:0,2'],
-                'description' => ['required']
-            ]
-        );
+        $data = $request->validate([
+            'name' => ['required'],
+            'qty' => ['required', 'numeric'],
+            'price' => ['required', 'numeric', 'between:0,999999.99'],
+            'description' => ['required']
+        ]);
 
-        if ($product) {
-            $updatedProduct = $product->update($data);
-            $message = "hello vade hari";
-            return $message;
-        } else {
-            $message = "hello vade awl gihin";
-            return $message;
+        try {
+            $updated = $product->update($data);
+
+            if ($updated) {
+                return response()->json(['message' => 'Product updated successfully', 'data' => $product], 200);
+            } else {
+                return response()->json(['message' => 'No changes detected. Product remains the same.'], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to update product', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -93,9 +107,17 @@ class ProductController extends Controller
 
     public function deleteproductApi(Product $product)
     {
-        $deleted = $product->delete();
+        try {
+            $deleted = $product->delete();
 
-        return $deleted;
+            if ($deleted) {
+                return response()->json(['message' => 'Product deleted successfully']);
+            } else {
+                return response()->json(['message' => 'Failed to delete product'], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred while deleting the product', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function delete(Product $product)
