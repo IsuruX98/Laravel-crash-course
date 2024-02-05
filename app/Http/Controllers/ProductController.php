@@ -91,9 +91,16 @@ class ProductController extends Controller
         return redirect(route('product.index'))->with('success', 'Product Updated Successfully');
     }
 
+    public function deleteproductApi(Product $product)
+    {
+        $deleted = $product->delete();
+
+        return $deleted;
+    }
+
     public function delete(Product $product)
     {
-        $product->delete();
+        $this->deleteproductApi($product);
 
         //after updating redecting to the home page
         return redirect(route('product.index'))->with('success', 'Product Deleted Successfully');

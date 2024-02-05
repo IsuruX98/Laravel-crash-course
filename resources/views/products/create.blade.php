@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h1>Product</h1>
+    <h1>Create a Product</h1>
     <div>
         {{-- this is how you to catch and diplay errors --}}
         @if ($errors->any())
