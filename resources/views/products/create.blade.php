@@ -10,6 +10,16 @@
 
 <body>
     <h1>Product</h1>
+    <div>
+        {{-- this is how you to catch and diplay errors --}}
+        @if ($errors->any())
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
     <form method="post" action="{{ route('product.store') }}">
         @csrf
         @method('post')
