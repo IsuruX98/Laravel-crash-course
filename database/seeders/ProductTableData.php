@@ -11,6 +11,8 @@ class ProductTableData extends Seeder
     /**
      * Run the database seeds.
      */
+
+    //  to run this seeder -> php artisan db:seed --class=ProductTableData
     public function run(): void
     {
         DB::table('products')->insert([
