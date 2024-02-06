@@ -32,6 +32,7 @@ class ProductController extends Controller
         // store the products data and send it to index page
         $products = $this->fetchdata();
 
+        //using the pagination
         $products = Product::paginate(10);
         return view('products.index', ['products' => $products]);
     }
