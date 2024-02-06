@@ -67,6 +67,10 @@
                 </tbody>
             </table>
             <!-- Pagination links -->
+
+            {{-- if you want to use a different pagination links() run -> php artisan vendor:publish --tag=laravel-pagination
+                 and use a proper one
+            --}}
             <div class="">
                 {{ $products->links('vendor.pagination.bootstrap-5') }}
             </div>
