@@ -5,44 +5,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Create a Product</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Add custom styles here if needed */
+    </style>
 </head>
 
 <body>
-    <h1>Create a Product</h1>
-    <div>
-        {{-- this is how you to catch and diplay errors --}}
-        @if ($errors->any())
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
+    <div class="container">
+        <h1 class="mt-5 font-weight-bolder">Create a Product</h1>
+        <div>
+            {{-- Display errors --}}
+            @if ($errors->any())
+                <div class="alert alert-danger mt-3">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+        <form class="mt-3" method="post" action="{{ route('product.store') }}">
+            @csrf
+            @method('post')
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label for="qty">Qty</label>
+                <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter quantity">
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="text" class="form-control" id="price" name="price" placeholder="Enter price">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" name="description"
+                    placeholder="Enter description">
+            </div>
+            <button type="submit" class="btn mt-4 btn-dark">Save as a new product</button>
+        </form>
     </div>
-    <form method="post" action="{{ route('product.store') }}">
-        @csrf
-        @method('post')
-        <div>
-            <label>Name</label>
-            <input type="text" name="name" placeholder="name">
-        </div>
-        <div>
-            <label>Qty</label>
-            <input type="text" name="qty" placeholder="qty">
-        </div>
-        <div>
-            <label>Price</label>
-            <input type="text" name="price" placeholder="price">
-        </div>
-        <div>
-            <label>Descrption</label>
-            <input type="text" name="description" placeholder="descrption">
-        </div>
-        <div>
-            <input type="submit" value="save as a new product">
-        </div>
-    </form>
 </body>
 
 </html>
